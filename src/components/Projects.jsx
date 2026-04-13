@@ -1,176 +1,118 @@
-import React, { useState } from 'react';
-
-const projects = [
-  {
-    filename: 'data_pipeline.go',
-    tags: ['POSTGRESQL', 'REDIS'],
-    title: 'High-Availability Data Pipeline',
-    description: 'Engineered a fault-tolerant ingestion pipeline handling 50k concurrent writes with sub-millisecond latency. Implements backpressure strategies and horizontal scaling metrics.',
-    readTime: '12m',
-  },
-  {
-    filename: 'oauth2_service.rs',
-    tags: ['SECURITY', 'MIDDLEWARE'],
-    title: 'OAuth2 Microservice',
-    description: 'Standalone identity provider implementing RFC 6749 with token rotation, PKCE, and multi-tenant isolation. Built for zero-downtime deployment with pre-allocation strategies.',
-    readTime: '08m',
-  },
-  {
-    filename: 'graphql_wrapper.ts',
-    tags: ['GRAPHQL', 'MIDDLEWARE'],
-    title: 'GQL Wrapper Engine',
-    description: 'GraphQL translation layer for legacy SOAP APIs. Implements schema stitching and intelligent query batching for distributed databases.',
-    readTime: '15m',
-  },
-  {
-    filename: 'k8s_cluster.yaml',
-    tags: ['KUBERNETES', 'DOCKER'],
-    title: 'Auto-Scaling Cluster Config',
-    description: 'Infrastructure-as-code for dynamic resource allocation. Handles burst traffic up to 200k RPM with automated horizontal pod autoscaling and predictive load balancing.',
-    readTime: '10m',
-  },
-];
-
-const ProjectCard = ({ project }) => {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: '#0D1626',
-        border: `1px solid ${hovered ? 'rgba(0,255,157,0.2)' : '#1A2840'}`,
-        borderRadius: '8px',
-        overflow: 'hidden',
-        transition: 'all 0.25s ease',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        boxShadow: hovered ? '0 12px 30px rgba(0,0,0,0.3)' : 'none',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      {/* Card Header / File tab */}
-      <div style={{
-        padding: '12px 16px',
-        background: '#111E31',
-        borderBottom: '1px solid #1A2840',
-      }}>
-        <span className="file-tab">{project.filename}</span>
-      </div>
-
-      <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {/* Tech tags */}
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
-          {project.tags.map((tag) => (
-            <span key={tag} className="tech-tag">{tag}</span>
-          ))}
-        </div>
-
-        {/* Title */}
-        <h3 style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: '17px',
-          fontWeight: '700',
-          color: hovered ? '#00FF9D' : '#E2E8F0',
-          marginBottom: '12px',
-          lineHeight: '1.3',
-          transition: 'color 0.2s',
-        }}>
-          {project.title}
-        </h3>
-
-        {/* Description */}
-        <p style={{
-          fontSize: '14px',
-          color: '#8899AA',
-          lineHeight: '1.7',
-          marginBottom: '20px',
-          flex: 1,
-        }}>
-          {project.description}
-        </p>
-
-        {/* Footer */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingTop: '14px',
-          borderTop: '1px solid #1A2840',
-        }}>
-          <span style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: '10px', color: '#4A5568',
-            textTransform: 'uppercase', letterSpacing: '0.08em',
-          }}>
-            READ_TIME: {project.readTime}
-          </span>
-          <button style={{
-            display: 'flex', alignItems: 'center', gap: '6px',
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: '10px', fontWeight: '600',
-            color: '#00FF9D',
-            background: 'none', border: 'none', cursor: 'pointer',
-            letterSpacing: '0.06em', textTransform: 'uppercase',
-          }}>
-            CAT CONTENT.TXT
-            <span style={{
-              width: '18px', height: '18px',
-              border: '1px solid rgba(0,255,157,0.3)',
-              borderRadius: '3px',
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '10px',
-            }}>↗</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 
 const Projects = () => {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/projects`)
+      .then(res => res.json())
+      .then(data => {
+        setProjects(data || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  const ensureAbsoluteUrl = (url) => {
+    if (!url) return '';
+    return url.startsWith('http://') || url.startsWith('https://') ? url : `https://${url}`;
+  };
+
   return (
-    <section
-      id="projects"
-      style={{
-        padding: '100px 40px',
-        background: 'rgba(0,0,0,0.2)',
-        borderTop: '1px solid #1A2840',
-        borderBottom: '1px solid #1A2840',
-      }}
-    >
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        {/* Header */}
-        <div style={{ marginBottom: '48px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
-            <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '13px', color: '#8899AA',
-            }}>Case Studies /</span>
-          </div>
-          <h2 style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(28px, 3.5vw, 42px)',
-            fontWeight: '800',
-            color: '#E2E8F0',
-            letterSpacing: '-0.02em',
-          }}>
-            Core Infrastructure Modules
+    <section id="projects" className="font-mono">
+      <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-dashed border-slate-800 pb-6">
+        <div className="max-w-xl">
+          <span className="inline-block px-2 py-1 mb-4 bg-primary text-[#050A15] text-[10px] uppercase font-bold tracking-widest">
+            // Case_Studies
+          </span>
+          <h2 className="text-3xl md:text-5xl font-bold text-white uppercase">
+            Core Infrastructure <br /> Modules
           </h2>
         </div>
-
-        {/* Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '20px',
-        }}>
-          {projects.map((project) => (
-            <ProjectCard key={project.filename} project={project} />
-          ))}
-        </div>
+        <a className="text-primary text-xs border border-primary px-4 py-2 hover:bg-primary hover:text-[#050A15] transition-colors flex items-center gap-2 uppercase tracking-widest font-bold" href="https://github.com/Kezume" target="_blank" rel="noreferrer">
+          [ EXPLORE_ALL_REPOS ]
+        </a>
       </div>
+
+      {loading ? (
+        <div className="text-primary animate-pulse py-10 uppercase tracking-widest text-center">
+           [ FETCHING_PROJECT_DATA... ]
+        </div>
+      ) : projects.length === 0 ? (
+        <div className="text-slate-500 py-10 uppercase tracking-widest border border-dashed border-slate-800 text-center">
+           NO_PROJECTS_FOUND
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+          {projects.slice(0, 3).map((p, i) => {
+            const isLarge = (i % 3 === 0);
+            return (
+              <div key={p.id} className={`${isLarge ? 'md:col-span-2' : ''} bg-[#030610] border border-slate-800 p-8 flex flex-col justify-between group hover:border-primary transition-colors shadow-[${i%2===0 ? '-4px' : '4px'}_4px_0_0_transparent] hover:-translate-y-1 hover:shadow-[${i%2===0 ? '-4px' : '4px'}_4px_0_0_#4edea3]`}>
+                <div className="space-y-6">
+                  <div className="flex justify-between items-start">
+                    <div className="w-12 h-12 bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary border border-slate-700 group-hover:border-primary/30 transition-colors">
+                      <span className="material-symbols-outlined text-[24px]">api</span>
+                    </div>
+                    {p.tags && (
+                       <div className="flex flex-wrap gap-2 justify-end">
+                         {p.tags.split(',').map((tag, idx) => (
+                           <span key={idx} className="px-2 py-1 bg-slate-800 text-slate-300 text-[10px] uppercase font-bold tracking-widest border border-slate-700">{tag.trim()}</span>
+                         ))}
+                       </div>
+                    )}
+                  </div>
+                  <div>
+                    <Link to={`/modules/${p.id}`}>
+                      <h3 className={`${isLarge ? 'text-2xl' : 'text-xl'} font-bold mb-3 text-white uppercase group-hover:text-primary transition-colors line-clamp-2`}>
+                        {p.title}
+                      </h3>
+                    </Link>
+                    <p className="text-slate-400 max-w-lg text-sm leading-relaxed line-clamp-3">
+                      {p.description}
+                    </p>
+                  </div>
+                </div>
+                <div className="pt-6 mt-8 border-t border-dashed border-slate-800 flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 group-hover:text-primary transition-colors text-[10px] uppercase tracking-widest flex items-center gap-2 font-bold">
+                      {p.repo_url ? '[ OPEN_SOURCE ]' : '[ PROPRIETARY ]'}
+                    </span>
+                    <Link to={`/modules/${p.id}`} className="text-slate-300 text-xs font-bold flex items-center gap-2 uppercase hover:text-primary transition-colors">
+                      [ DETAILS ] <span className="material-symbols-outlined text-[14px]">arrow_right_alt</span>
+                    </Link>
+                  </div>
+                  <div className="flex items-center gap-4 border-t border-slate-800/50 pt-4">
+                    {p.demo_url && (
+                      <a href={ensureAbsoluteUrl(p.demo_url)} target="_blank" rel="noreferrer" className="text-primary hover:text-white transition-colors text-xs uppercase tracking-widest flex items-center gap-1">
+                        [Demo] <span className="material-symbols-outlined text-sm">open_in_new</span>
+                      </a>
+                    )}
+                    {p.repo_url && (
+                      <a href={ensureAbsoluteUrl(p.repo_url)} target="_blank" rel="noreferrer" className="text-slate-500 hover:text-primary transition-colors text-xs uppercase tracking-widest flex items-center gap-1">
+                        [Repo] <span className="material-symbols-outlined text-sm">arrow_outward</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+          </div>
+          {/* View All Button */}
+          <div className="mt-10 flex justify-center">
+            <Link to="/modules" className="flex items-center gap-3 px-8 py-4 border border-slate-700 text-slate-400 font-bold text-sm tracking-widest uppercase hover:border-primary hover:text-primary transition-colors">
+              [ LOAD_ALL_MODULES ] <span className="material-symbols-outlined text-sm">arrow_right_alt</span>
+            </Link>
+          </div>
+        </>
+      )}
     </section>
   );
 };

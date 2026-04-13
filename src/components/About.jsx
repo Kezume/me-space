@@ -2,173 +2,101 @@ import React from 'react';
 
 const About = () => {
   return (
-    <section
-      id="about"
-      style={{ padding: '100px 40px', maxWidth: '1200px', margin: '0 auto' }}
-    >
-      {/* Section Badge */}
-      <div className="badge" style={{ marginBottom: '48px' }}>
-        SYSTEM_INIT // ABOUT_ME
+    <section id="about" className="py-24 relative font-mono">
+      
+      {/* Decorative large background text */}
+      <div className="absolute top-10 right-0 text-[#E2E8F0]/[0.02] font-black text-[120px] md:text-[200px] leading-none select-none pointer-events-none uppercase tracking-tighter">
+        SYSTEMS
       </div>
 
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1.4fr',
-        gap: '80px',
-        alignItems: 'start',
-      }} className="about-grid">
-        {/* Left Column */}
-        <div>
-          <h2 style={{
-            fontFamily: "'Inter', sans-serif",
-            fontSize: 'clamp(28px, 3.5vw, 42px)',
-            fontWeight: '800',
-            color: '#E2E8F0',
-            lineHeight: '1.2',
-            marginBottom: '12px',
-            letterSpacing: '-0.02em',
-          }}>
-            Architecting Scalable Logic
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
+        
+        {/* Left Side: Philosophy */}
+        <div className="space-y-8 p-8 border border-primary/20 bg-[#030610] shadow-[-4px_4px_0_0_#4edea3]">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <span className="text-primary font-bold">&gt;&gt;</span>
+            <span className="text-primary text-xs uppercase tracking-[0.2em] font-semibold">THE_PHILOSOPHY</span>
+          </div>
+          
+          <h2 className="text-3xl md:text-5xl font-bold leading-tight text-white uppercase">
+            BUILT FOR <br/>
+            <span className="bg-primary text-[#050A15] px-2 py-1 inline-block mt-2">RELIABILITY.</span>
           </h2>
-          <div className="section-line" />
-
-          {/* History tag */}
-          <div style={{ marginBottom: '20px' }}>
-            <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '12px', color: '#00FF9D', fontStyle: 'italic',
-              marginRight: '8px',
-            }}>history</span>
-            <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '11px', color: '#4A5568', letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-            }}>2018 — PRESENT</span>
-          </div>
-
-          {/* Quote */}
-          <p style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: '13px',
-            color: '#8899AA',
-            fontStyle: 'italic',
-            lineHeight: '1.7',
-            marginBottom: '32px',
-            borderLeft: '2px solid #1A2840',
-            paddingLeft: '16px',
-          }}>
-            "The beauty of backend is not what the user sees, but how the system breathes under pressure."
+          
+          <p className="text-slate-400 text-sm md:text-base leading-relaxed mt-6">
+            My approach focuses on the <span className="text-white border-b border-primary border-dashed font-bold">"unseen"</span> parts of the application. While others focus on the pixels, I focus on the transactions, the memory allocation, and the load balancing.
           </p>
-
-          {/* Status Card */}
-          <div className="card" style={{ padding: '20px' }}>
-            {[
-              { key: 'STATUS', value: 'ACTIVE', accent: true },
-              { key: 'CURRENT_LOC', value: 'San Francisco, CA', accent: false },
-              { key: 'UPTIME', value: '14,200+ hours code', accent: false },
-            ].map((item) => (
-              <div key={item.key} style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                padding: '8px 0',
-                borderBottom: '1px solid #1A2840',
-              }}>
-                <span style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: '10px', color: '#4A5568',
-                  letterSpacing: '0.1em', textTransform: 'uppercase',
-                }}>
-                  {item.key}
-                </span>
-                <span style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: '12px',
-                  color: item.accent ? '#00FF9D' : '#E2E8F0',
-                  fontWeight: '500',
-                }}>
-                  {item.accent && <span style={{ marginRight: '6px', fontSize: '8px' }}>●</span>}
-                  {item.value}
-                </span>
-              </div>
-            ))}
+          
+          <div className="space-y-4 pt-6 border-t border-dashed border-slate-800">
+            <div className="flex items-center gap-4 group">
+              <span className="text-primary">[+]</span>
+              <span className="text-sm tracking-widest text-slate-300 group-hover:text-primary transition-colors uppercase">Type-Safe Architectures</span>
+            </div>
+            
+            <div className="flex items-center gap-4 group">
+              <span className="text-primary">[+]</span>
+              <span className="text-sm tracking-widest text-slate-300 group-hover:text-primary transition-colors uppercase">Test-Driven Logic Blocks</span>
+            </div>
+            
+            <div className="flex items-center gap-4 group">
+              <span className="text-primary">[+]</span>
+              <span className="text-sm tracking-widest text-slate-300 group-hover:text-primary transition-colors uppercase">Optimized Query Execution</span>
+            </div>
           </div>
         </div>
 
-        {/* Right Column */}
-        <div>
-          <p style={{ fontSize: '16px', color: '#8899AA', lineHeight: '1.8', marginBottom: '20px' }}>
-            My journey began with a fascination for how data moves through wires. While most were captivated by pixels, I was drawn to the efficiency of SQL queries and the elegance of concurrent processes in Go.
-          </p>
-          <p style={{ fontSize: '16px', color: '#8899AA', lineHeight: '1.8', marginBottom: '36px' }}>
-            Over the past five years, I've transitioned from building simple REST APIs to architecting complex microservices environments. I believe that good engineering is about making trade-offs visible and ensuring that every millisecond of latency is accounted for.
-          </p>
-
-          {/* Core Philosophy Card */}
-          <div style={{
-            background: '#0D1626',
-            border: '1px solid #1A2840',
-            borderRadius: '8px',
-            overflow: 'hidden',
-          }}>
-            {/* Card header */}
-            <div style={{
-              padding: '14px 20px',
-              background: '#111E31',
-              borderBottom: '1px solid #1A2840',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-            }}>
-              <span style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '12px', color: '#00FF9D',
-              }}>architecture</span>
-              <span style={{
-                fontFamily: "'Inter', sans-serif",
-                fontSize: '14px', fontWeight: '600', color: '#E2E8F0',
-              }}>Core Philosophy</span>
-            </div>
-
-            <div style={{ padding: '24px 20px' }}>
-              {[
-                { num: '01', title: 'Simplicity over Cleverness', desc: 'Code should be easy to delete and easier to reason about.' },
-                { num: '02', title: 'Observability First', desc: "If it's not monitored, it doesn't exist in production." },
-                { num: '03', title: 'Type Safety', desc: 'Let the compiler do the heavy lifting so humans can do the creative work.' },
-              ].map((item) => (
-                <div key={item.num} style={{
-                  display: 'flex',
-                  gap: '16px',
-                  marginBottom: '20px',
-                }}>
-                  <span style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: '11px', color: '#00FF9D',
-                    fontWeight: '600', flexShrink: 0, paddingTop: '2px',
-                  }}>
-                    {item.num}
-                  </span>
-                  <div>
-                    <span style={{
-                      fontSize: '14px', fontWeight: '600', color: '#E2E8F0',
-                    }}>{item.title}: </span>
-                    <span style={{
-                      fontSize: '14px', color: '#8899AA',
-                    }}>{item.desc}</span>
-                  </div>
-                </div>
-              ))}
+        {/* Right Side: Metrics Dashboard */}
+        <div className="bg-[#030610] p-8 border border-slate-800 relative shadow-[4px_4px_0_0_#334155]">
+          
+          <div className="flex items-center justify-between mb-8 pb-4 border-b border-dashed border-slate-800">
+            <div className="flex items-center gap-3">
+              <div className="w-2 h-2 bg-primary animate-pulse"></div>
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Active System Metrics</span>
             </div>
           </div>
+          
+          <div className="space-y-8">
+            {/* Metric 1 */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500 uppercase">API THROUGHPUT</span>
+                <span className="text-primary font-bold">98%</span>
+              </div>
+              <div className="h-4 bg-[#050A15] border border-slate-800 p-0.5">
+                <div className="h-full bg-primary w-[98%] config-striped-bg"></div>
+              </div>
+            </div>
+            
+            {/* Metric 2 */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500 uppercase">RESOURCE EFFICIENCY</span>
+                <span className="text-yellow-400 font-bold">84%</span>
+              </div>
+              <div className="h-4 bg-[#050A15] border border-slate-800 p-0.5">
+                <div className="h-full bg-yellow-400 w-[84%] config-striped-bg"></div>
+              </div>
+            </div>
+            
+            {/* Metric 3 */}
+            <div className="space-y-2">
+              <div className="flex justify-between text-xs">
+                <span className="text-slate-500 uppercase">CACHE HIT RATE</span>
+                <span className="text-blue-400 font-bold">92%</span>
+              </div>
+              <div className="h-4 bg-[#050A15] border border-slate-800 p-0.5">
+                <div className="h-full bg-blue-400 w-[92%] config-striped-bg"></div>
+              </div>
+            </div>
+          </div>
+          
         </div>
       </div>
-
+      
       <style>{`
-        @media (max-width: 900px) {
-          .about-grid {
-            grid-template-columns: 1fr !important;
-            gap: 40px !important;
-          }
+        .config-striped-bg {
+          background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+          background-size: 1rem 1rem;
         }
       `}</style>
     </section>

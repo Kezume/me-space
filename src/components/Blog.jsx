@@ -1,311 +1,153 @@
-import React, { useState } from 'react';
-
-const blogPosts = [
-  {
-    filename: 'grpc_microservices.go',
-    tags: ['GOLANG', 'GRPC'],
-    title: 'Architecting Scalable Microservices with Go and gRPC',
-    description: 'A deep dive into designing fault-tolerant, high-throughput service meshes with Protocol Buffers. Covers connection pooling, deadline propagation, and distributed tracing.',
-    date: '2024.10.14',
-    readTime: '18m',
-    featured: true,
-  },
-  {
-    filename: 'linux_kernel.sh',
-    tags: ['LINUX', 'LOW LEVEL'],
-    title: 'Understanding eBPF for Observability',
-    description: 'Leveraging kernel hooks to monitor application behavior without instrumenting code or adding significant overhead.',
-    date: '2024.09.02',
-    readTime: '20m',
-  },
-  {
-    filename: 'postgre_internals.sql',
-    tags: ['DATABASE', 'SQL'],
-    title: 'PostgreSQL Indexing: Beyond B-Trees',
-    description: 'Exploring GIN, GiST, and BRIN index types for spatial data, full-text search, and time-series performance.',
-    date: '2024.08.21',
-    readTime: '10m',
-  },
-];
-
-const BlogCard = ({ post }) => {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        background: '#0D1626',
-        border: `1px solid ${hovered ? 'rgba(0,255,157,0.2)' : '#1A2840'}`,
-        borderRadius: '8px',
-        overflow: 'hidden',
-        transition: 'all 0.25s ease',
-        transform: hovered ? 'translateY(-3px)' : 'translateY(0)',
-        display: 'flex',
-        flexDirection: 'column',
-        cursor: 'pointer',
-      }}
-    >
-      {/* File Tab */}
-      <div style={{
-        padding: '10px 16px',
-        background: '#111E31',
-        borderBottom: '1px solid #1A2840',
-      }}>
-        <span className="file-tab">{post.filename}</span>
-      </div>
-
-      <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        {/* Tags */}
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '14px' }}>
-          {post.tags.map((tag) => (
-            <span key={tag} className="tech-tag">{tag}</span>
-          ))}
-        </div>
-
-        {/* Title */}
-        <h3 style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: '16px',
-          fontWeight: '700',
-          color: hovered ? '#00FF9D' : '#E2E8F0',
-          marginBottom: '10px',
-          lineHeight: '1.35',
-          transition: 'color 0.2s',
-          flex: 1,
-        }}>
-          {post.title}
-        </h3>
-
-        {/* Description */}
-        <p style={{
-          fontSize: '13.5px',
-          color: '#8899AA',
-          lineHeight: '1.65',
-          marginBottom: '18px',
-        }}>
-          {post.description}
-        </p>
-
-        {/* Footer */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          paddingTop: '14px',
-          borderTop: '1px solid #1A2840',
-        }}>
-          <span style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: '10px', color: '#4A5568',
-            letterSpacing: '0.08em', textTransform: 'uppercase',
-          }}>
-            READ_TIME: {post.readTime}
-          </span>
-          <button style={{
-            display: 'flex', alignItems: 'center', gap: '6px',
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: '10px', fontWeight: '600', color: '#00FF9D',
-            background: 'none', border: 'none', cursor: 'pointer',
-            letterSpacing: '0.06em', textTransform: 'uppercase',
-          }}>
-            CAT CONTENT.TXT
-            <span style={{
-              width: '18px', height: '18px',
-              border: '1px solid rgba(0,255,157,0.3)',
-              borderRadius: '3px',
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: '10px',
-            }}>↗</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 
 const Blog = () => {
-  const [email, setEmail] = useState('');
-  const featured = blogPosts.find(p => p.featured);
-  const secondary = blogPosts.filter(p => !p.featured);
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/blogs`)
+      .then(res => res.json())
+      .then(data => {
+        setBlogs(data || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
+
+  const latestBlog = blogs.length > 0 ? blogs[0] : null;
+  const recentBlogs = blogs.slice(1, 4); // max 3 additional
 
   return (
-    <section
-      id="blog"
-      style={{ padding: '100px 40px', maxWidth: '1200px', margin: '0 auto' }}
-    >
-      {/* Header */}
-      <div style={{ marginBottom: '48px' }}>
-        <div className="badge" style={{ marginBottom: '12px' }}>
-          LATEST RELEASE
-        </div>
-        <h2 style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: 'clamp(28px, 3.5vw, 42px)',
-          fontWeight: '800',
-          color: '#E2E8F0',
-          letterSpacing: '-0.02em',
-        }}>
-          Technical Writeups
-        </h2>
-      </div>
-
-      {/* Featured post — full width */}
-      {featured && (
-        <div style={{
-          background: '#0D1626',
-          border: '1px solid #1A2840',
-          borderRadius: '8px',
-          overflow: 'hidden',
-          marginBottom: '20px',
-          transition: 'all 0.25s ease',
-        }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.borderColor = 'rgba(0,255,157,0.2)';
-            e.currentTarget.style.transform = 'translateY(-2px)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.borderColor = '#1A2840';
-            e.currentTarget.style.transform = 'translateY(0)';
-          }}
-        >
-          <div style={{
-            padding: '10px 16px',
-            background: '#111E31',
-            borderBottom: '1px solid #1A2840',
-            display: 'flex', alignItems: 'center', gap: '16px',
-          }}>
-            <span className="file-tab">{featured.filename}</span>
-            <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '10px', color: '#00FF9D',
-              background: 'rgba(0,255,157,0.1)',
-              border: '1px solid rgba(0,255,157,0.2)',
-              borderRadius: '3px', padding: '2px 8px',
-            }}>FEATURED</span>
-          </div>
-          <div style={{ padding: '24px' }}>
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
-              {featured.tags.map(tag => (
-                <span key={tag} className="tech-tag">{tag}</span>
-              ))}
-              <span style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '10px', color: '#4A5568', marginLeft: 'auto',
-              }}>{featured.date}</span>
+    <section id="blog" className="font-mono">
+      
+      {/* Hero / Latest Article */}
+      {latestBlog && (
+        <div className="mb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 border border-slate-800 bg-[#030610] shadow-[8px_8px_0_0_#0f172a] hover:border-primary transition-colors duration-500">
+            <div className="lg:col-span-7 p-8 md:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-dashed border-slate-800">
+              <div className="flex items-center justify-between mb-8">
+                <span className="bg-primary text-[#050A15] px-2 py-1 text-[10px] font-bold uppercase tracking-widest">
+                  [LATEST_RELEASE]
+                </span>
+                <span className="text-slate-500 text-[10px] tracking-widest uppercase">
+                  {new Date(latestBlog.created_at).toISOString().split('T')[0]} // {new Date(latestBlog.created_at).toISOString().split('T')[1].substring(0,5)} UTC
+                </span>
+              </div>
+              
+              <h3 className="text-3xl md:text-5xl font-bold text-white leading-tight uppercase mb-6 hover:text-primary transition-colors cursor-pointer line-clamp-2">
+                {latestBlog.title}
+              </h3>
+              
+              <p className="text-slate-400 text-sm mb-10 max-w-xl leading-relaxed line-clamp-3">
+                {latestBlog.content}
+              </p>
+              
+              <div className="flex flex-wrap gap-3 mb-10">
+                {latestBlog.tags && latestBlog.tags.split(',').map((tag, idx) => (
+                  <span key={idx} className="px-2 py-1 border border-slate-700 text-slate-400 text-[10px] font-bold uppercase hover:bg-slate-800 transition-colors">{tag.trim()}</span>
+                ))}
+              </div>
+              
+              <div>
+                <Link to={`/docs/${latestBlog.id}`} className="inline-flex items-center gap-3 px-6 py-4 border border-primary text-primary hover:bg-primary hover:text-[#050A15] font-bold text-sm tracking-widest uppercase transition-all">
+                  <span>exec read_mem 0x{String(latestBlog.id).split('-')[0].toUpperCase()}</span>
+                  <span className="material-symbols-outlined">arrow_right_alt</span>
+                </Link>
+              </div>
             </div>
-            <h3 style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '22px', fontWeight: '700', color: '#E2E8F0',
-              marginBottom: '12px', lineHeight: '1.3',
-            }}>{featured.title}</h3>
-            <p style={{ fontSize: '15px', color: '#8899AA', lineHeight: '1.7', marginBottom: '20px' }}>
-              {featured.description}
-            </p>
-            <div style={{
-              display: 'flex', alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingTop: '16px', borderTop: '1px solid #1A2840',
-            }}>
-              <span style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '10px', color: '#4A5568', textTransform: 'uppercase',
-              }}>READ_TIME: {featured.readTime}</span>
-              <button style={{
-                display: 'flex', alignItems: 'center', gap: '8px',
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '11px', fontWeight: '600', color: '#060D1A',
-                background: '#00FF9D', border: 'none',
-                borderRadius: '4px', padding: '8px 16px', cursor: 'pointer',
-                letterSpacing: '0.05em', textTransform: 'uppercase',
-              }}>
-                EXEC READ_POST →
-              </button>
+            
+            <div className="lg:col-span-5 bg-[#050A15] relative flex items-center justify-center p-8 lg:p-12">
+              <div className="w-full h-full border border-slate-700 p-6 flex flex-col justify-center gap-6 relative group">
+                <div className="absolute top-0 left-0 bg-slate-800 px-2 text-[10px] text-slate-400 -mt-2 ml-4">SYS_DUMP_VIEW</div>
+                
+                <div className="border border-dashed border-primary p-2 flex items-center justify-center group-hover:bg-primary/5 transition-colors">
+                   <span className="text-xs text-primary font-bold tracking-widest uppercase truncate">{latestBlog.slug}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Secondary posts + Newsletter */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr 1fr',
-        gap: '20px',
-        alignItems: 'start',
-      }} className="blog-grid">
-        {secondary.map(post => <BlogCard key={post.filename} post={post} />)}
-
-        {/* Newsletter card */}
-        <div style={{
-          background: '#0D1626',
-          border: '1px solid #1A2840',
-          borderRadius: '8px',
-          padding: '32px 24px',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          textAlign: 'center',
-          gap: '16px',
-        }}>
-          <div style={{
-            width: '48px', height: '48px',
-            border: '1px solid rgba(0,255,157,0.3)',
-            borderRadius: '8px',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '22px', color: '#00FF9D',
-          }}>✉</div>
-          <div>
-            <h4 style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '18px', fontWeight: '700', color: '#00FF9D',
-              marginBottom: '8px',
-            }}>Weekly Kernel Dump</h4>
-            <p style={{ fontSize: '13px', color: '#8899AA', lineHeight: '1.6' }}>
-              Get the latest backend engineering patterns and architectural insights delivered to your inbox.
-            </p>
-          </div>
-          <div style={{ display: 'flex', width: '100%', gap: '0' }}>
-            <input
-              type="email"
-              placeholder="root@localhost"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={{
-                flex: 1,
-                background: '#060D1A',
-                border: '1px solid #1A2840',
-                borderRight: 'none',
-                borderRadius: '6px 0 0 6px',
-                padding: '10px 14px',
-                color: '#E2E8F0',
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '12px', outline: 'none',
-              }}
-              onFocus={(e) => { e.target.style.borderColor = 'rgba(0,255,157,0.3)'; }}
-              onBlur={(e) => { e.target.style.borderColor = '#1A2840'; }}
-            />
-            <button style={{
-              background: '#00FF9D',
-              border: '1px solid #00FF9D',
-              borderRadius: '0 6px 6px 0',
-              padding: '10px 14px',
-              color: '#060D1A',
-              fontSize: '16px',
-              cursor: 'pointer',
-              fontWeight: '700',
-            }}>→</button>
-          </div>
+      {/* Articles Grid Header */}
+      <div className="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-dashed border-slate-800 pb-4 gap-4">
+        <div className="max-w-2xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-white uppercase">Technical_Documentation</h2>
+        </div>
+        <div className="flex gap-6 font-mono text-xs font-bold uppercase tracking-widest text-slate-500">
+           <span className="flex items-center gap-2"><span className="text-primary">[+]</span> PUBLISHED</span>
         </div>
       </div>
 
-      <style>{`
-        @media (max-width: 900px) {
-          .blog-grid {
-            grid-template-columns: 1fr !important;
-          }
-        }
-      `}</style>
+      {loading ? (
+         <div className="text-primary animate-pulse py-10 uppercase tracking-widest text-center">
+            [ FETCHING_DOCUMENTATION... ]
+         </div>
+      ) : blogs.length === 0 ? (
+         <div className="text-slate-500 py-10 uppercase tracking-widest border border-dashed border-slate-800 text-center">
+            NO_DOCUMENTATION_FOUND
+         </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {recentBlogs.map((b) => (
+            <article key={b.id} className="bg-[#030610] border border-slate-800 flex flex-col hover:border-primary transition-colors group">
+              <div className="px-4 py-2 bg-slate-800/50 border-b border-slate-800 flex items-center gap-2">
+                <span className="text-primary text-[10px]">&gt;</span>
+                <span className="text-[10px] text-slate-400">{b.slug}.md</span>
+              </div>
+              <div className="p-6 flex-grow flex flex-col">
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {b.tags && b.tags.split(',').map((tag, idx) => (
+                    <span key={idx} className="text-slate-500 text-[10px] font-bold uppercase tracking-widest">#{tag.trim()}</span>
+                  ))}
+                </div>
+                <h3 className="text-lg font-bold mb-4 text-white uppercase group-hover:text-primary transition-colors line-clamp-2">
+                  {b.title}
+                </h3>
+                <p className="text-slate-400 text-xs mb-8 leading-relaxed line-clamp-3">
+                  {b.content}
+                </p>
+                <div className="mt-auto pt-4 border-t border-dashed border-slate-800 flex items-center justify-between">
+                  <Link to={`/docs/${b.id}`} className="text-slate-300 text-xs font-bold flex items-center gap-2 uppercase group-hover:text-primary transition-colors">
+                    [ READ_MEMORY_BLOCK ]
+                  </Link>
+                  <span className="text-[10px] text-slate-600">PTR_0x{String(b.id).split('-')[0].toUpperCase()}</span>
+                </div>
+              </div>
+            </article>
+          ))}
+
+          {/* Decorative Newsletter inside Grid */}
+          <div className="bg-primary/5 border border-primary/30 p-6 flex flex-col text-center shadow-[4px_4px_0_0_#4edea3]">
+            <div className="mb-4">
+              <span className="text-primary text-2xl font-bold">@</span>
+            </div>
+            <h3 className="text-xl font-bold mb-2 text-white uppercase">Weekly Dump</h3>
+            <p className="text-slate-400 text-xs mb-6">Backend engineering patterns delivered to your root inbox.</p>
+            <div className="mt-auto flex flex-col gap-2">
+              <input className="bg-[#050A15] border border-primary/50 text-white text-xs px-3 py-2 outline-none focus:border-primary text-center" placeholder="USER@LOCALHOST" type="email"/>
+              <button className="bg-primary text-[#050A15] font-bold text-xs px-3 py-2 uppercase hover:bg-white transition-colors">
+                [ SUBSCRIBE ]
+              </button>
+            </div>
+          </div>
+
+        </div>
+      )}
+
+      {/* View All Blogs Button */}
+      {blogs.length > 0 && (
+        <div className="mt-12 flex justify-center">
+          <Link to="/docs" className="flex items-center gap-3 px-8 py-4 border border-slate-700 text-slate-400 font-bold text-sm tracking-widest uppercase hover:border-primary hover:text-primary transition-colors">
+            [ LOAD_ALL_DOCUMENTATION ] <span className="material-symbols-outlined text-sm">arrow_right_alt</span>
+          </Link>
+        </div>
+      )}
     </section>
   );
 };

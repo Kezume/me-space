@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const location = useLocation();
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const navLinks = [
     { name: 'Home', href: '#home', id: 'home' },
-    { name: 'About', href: '#about', id: 'about' },
     { name: 'Projects', href: '#projects', id: 'projects' },
+    { name: 'About', href: '#about', id: 'about' },
     { name: 'Blog', href: '#blog', id: 'blog' },
     { name: 'Contact', href: '#contact', id: 'contact' },
   ];
@@ -22,7 +25,7 @@ const Navbar = () => {
         const el = document.getElementById(sections[i]);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= 100) {
+          if (rect.top <= 150) {
             setActiveSection(sections[i]);
             break;
           }
@@ -38,127 +41,76 @@ const Navbar = () => {
     e.preventDefault();
     setActiveSection(id);
     setMobileOpen(false);
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+    
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    } else {
+      const target = document.querySelector(href);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   };
 
   return (
-    <nav
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 100,
-        transition: 'all 0.3s ease',
-        backgroundColor: isScrolled ? 'rgba(6, 13, 26, 0.92)' : 'transparent',
-        backdropFilter: isScrolled ? 'blur(20px)' : 'none',
-        borderBottom: isScrolled ? '1px solid #1A2840' : '1px solid transparent',
-      }}
-    >
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 40px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '70px' }}>
-          
-          {/* Logo */}
-          <a
-            href="#home"
-            onClick={(e) => handleNavClick(e, '#home', 'home')}
-            style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none' }}
-          >
-            <div style={{
-              width: '10px', height: '10px', borderRadius: '50%',
-              background: '#00FF9D',
-              boxShadow: '0 0 10px #00FF9D',
-            }} />
-            <span style={{
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '16px', fontWeight: '600',
-              color: '#E2E8F0', letterSpacing: '0.02em',
-            }}>
-              Binary Architect
-            </span>
-          </a>
-
-          {/* Desktop Nav */}
-          <ul style={{ display: 'flex', alignItems: 'center', gap: '32px', listStyle: 'none' }} className="hidden-mobile">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.id;
-              return (
-                <li key={link.id}>
+    <>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 font-mono ${isScrolled ? 'bg-[#050A15]/95 border-b border-primary/20 backdrop-blur-md shadow-[0_5px_0_rgba(78,222,163,0.05)]' : 'bg-transparent'}`}>
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+          <div className="flex justify-between items-center h-20">
+            
+            {/* Logo */}
+            <div className="flex items-center">
+              <a href="#home" onClick={(e) => handleNavClick(e, '#home', 'home')} className="text-lg font-bold tracking-widest text-[#E2E8F0] flex items-center gap-2 group hover:text-primary transition-colors">
+                <span className="text-primary group-hover:animate-ping">&gt;_</span>
+                ROIHAN_ARRAFLI
+              </a>
+            </div>
+            
+            {/* Desktop Links */}
+            <div className="hidden md:flex items-center gap-2 text-xs uppercase tracking-widest">
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.id;
+                return (
                   <a
+                    key={link.id}
                     href={link.href}
                     onClick={(e) => handleNavClick(e, link.href, link.id)}
-                    style={{
-                      fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      color: isActive ? '#00FF9D' : '#8899AA',
-                      textDecoration: 'none',
-                      letterSpacing: '0.03em',
-                      paddingBottom: '4px',
-                      borderBottom: isActive ? '2px solid #00FF9D' : '2px solid transparent',
-                      transition: 'all 0.2s ease',
-                      textTransform: 'uppercase',
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isActive) e.target.style.color = '#E2E8F0';
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) e.target.style.color = '#8899AA';
-                    }}
+                    className={`px-4 py-2 border transition-colors ${isActive ? "border-primary text-primary bg-primary/10" : "border-transparent text-slate-400 hover:border-primary/30 hover:text-slate-200"}`}
                   >
                     {link.name}
                   </a>
-                </li>
-              );
-            })}
-          </ul>
+                );
+              })}
+            </div>
 
-          {/* Terminal icon button */}
-          <button
-            style={{
-              width: '38px', height: '38px',
-              border: '1px solid #1A2840',
-              borderRadius: '6px',
-              background: 'rgba(13, 22, 38, 0.8)',
-              color: '#00FF9D',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '14px',
-              transition: 'all 0.2s',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(0,255,157,0.08)';
-              e.currentTarget.style.borderColor = 'rgba(0,255,157,0.3)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(13, 22, 38, 0.8)';
-              e.currentTarget.style.borderColor = '#1A2840';
-            }}
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Menu"
-          >
-            {mobileOpen ? '✕' : '>_'}
-          </button>
+            {/* Actions */}
+            <div className="flex items-center gap-4">
+              <a href="https://github.com/Kezume" target="_blank" rel="noreferrer" className="hidden lg:flex items-center px-3 py-2 border border-slate-700 text-slate-400 hover:text-white hover:border-slate-500 transition-colors text-xs uppercase tracking-widest gap-2">
+                 <span className="material-symbols-outlined text-[16px]">terminal</span>
+                 SOURCE
+              </a>
+
+              <button 
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="w-10 h-10 border border-primary/30 text-primary md:hidden bg-[#050A15] hover:bg-primary/10 transition-colors flex items-center justify-center uppercase" 
+                title="Menu"
+              >
+                <span className="material-symbols-outlined">
+                  {mobileOpen ? 'close' : 'menu'}
+                </span>
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </nav>
 
       {/* Mobile Dropdown */}
       {mobileOpen && (
-        <div style={{
-          position: 'absolute',
-          top: '70px', right: '20px', width: '220px',
-          background: '#0D1626',
-          border: '1px solid #1A2840',
-          borderRadius: '8px',
-          padding: '16px 0',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
-        }}>
+        <div className="fixed top-20 left-0 right-0 bg-[#050A15] border-b border-primary/20 z-40 md:hidden flex flex-col font-mono text-sm uppercase tracking-widest shadow-xl">
           {navLinks.map((link) => {
             const isActive = activeSection === link.id;
             return (
@@ -166,31 +118,15 @@ const Navbar = () => {
                 key={link.id}
                 href={link.href}
                 onClick={(e) => handleNavClick(e, link.href, link.id)}
-                style={{
-                  display: 'block',
-                  padding: '10px 20px',
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: '13px',
-                  color: isActive ? '#00FF9D' : '#8899AA',
-                  textDecoration: 'none',
-                  letterSpacing: '0.03em',
-                  textTransform: 'uppercase',
-                  borderLeft: isActive ? '2px solid #00FF9D' : '2px solid transparent',
-                }}
+                className={`block px-6 py-4 border-l-4 transition-colors ${isActive ? "border-primary text-primary bg-primary/5" : "border-transparent text-slate-400 hover:text-white hover:bg-white/5"}`}
               >
-                {link.name}
+                <span className="opacity-50 mr-2">0{navLinks.indexOf(link) + 1}.</span> {link.name}
               </a>
             );
           })}
         </div>
       )}
-
-      <style>{`
-        @media (max-width: 768px) {
-          .hidden-mobile { display: none !important; }
-        }
-      `}</style>
-    </nav>
+    </>
   );
 };
 
