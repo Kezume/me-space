@@ -260,24 +260,24 @@ const AdminPanel = () => {
                 {/* ---------------- BLOGS VIEW ---------------- */}
                 {activeMenu === 'blogs' && viewMode === 'list' && (
                   <div className="space-y-6 animate-in slide-in-from-right-4 duration-300">
-                     <div className="flex justify-between items-center bg-[#030610] p-4 border border-slate-800">
-                       <h2 className="text-lg font-bold uppercase tracking-widest flex items-center gap-2">
+                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#030610] p-4 border border-slate-800">
+                       <h2 className="text-base md:text-lg font-bold uppercase tracking-widest flex items-center gap-2">
                          <span className="w-2 h-2 bg-primary"></span> Blog_Archive Registry
                        </h2>
-                       <button onClick={() => setViewMode('create_blog')} className="bg-primary text-[#050A15] px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
-                         + Initialize_New_Record
+                       <button onClick={() => setViewMode('create_blog')} className="w-full sm:w-auto bg-primary text-[#050A15] px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
+                         + New_Record
                        </button>
                      </div>
                      
-                     <div className="border border-slate-800 bg-[#030610] overflow-hidden">
-                       <table className="w-full text-left border-collapse">
+                     <div className="border border-slate-800 bg-[#030610] overflow-x-auto">
+                       <table className="min-w-[600px] w-full text-left border-collapse">
                          <thead>
                            <tr className="border-b border-slate-800 bg-slate-900/50">
-                             <th className="p-4 text-slate-500 text-[10px] font-bold uppercase tracking-widest w-16">ID</th>
-                             <th className="p-4 text-slate-500 text-[10px] font-bold uppercase tracking-widest">TITLE</th>
-                             <th className="p-4 text-slate-500 text-[10px] font-bold uppercase tracking-widest">TAGS</th>
-                             <th className="p-4 text-slate-500 text-[10px] font-bold uppercase tracking-widest">DATE</th>
-                             <th className="p-4 text-slate-500 text-[10px] font-bold uppercase tracking-widest text-right">ACTION</th>
+                             <th className="p-3 text-slate-500 text-[10px] font-bold uppercase tracking-widest w-16">ID</th>
+                             <th className="p-3 text-slate-500 text-[10px] font-bold uppercase tracking-widest">TITLE</th>
+                             <th className="p-3 text-slate-500 text-[10px] font-bold uppercase tracking-widest">TAGS</th>
+                             <th className="p-3 text-slate-500 text-[10px] font-bold uppercase tracking-widest">DATE</th>
+                             <th className="p-3 text-slate-500 text-[10px] font-bold uppercase tracking-widest text-right">ACTION</th>
                            </tr>
                          </thead>
                          <tbody>
@@ -286,13 +286,13 @@ const AdminPanel = () => {
                            )}
                            {data.blogs.map(b => (
                              <tr key={b.id} className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors group">
-                               <td className="p-4 text-slate-400 text-sm">0x{String(b.id).split('-')[0].toUpperCase()}</td>
-                               <td className="p-4 text-white text-sm font-bold">{b.title}</td>
-                               <td className="p-4 text-slate-400 text-xs">{b.tags}</td>
-                               <td className="p-4 text-slate-500 text-xs">{new Date(b.created_at).toISOString().split('T')[0]}</td>
-                               <td className="p-4 text-right">
+                               <td className="p-3 text-slate-400 text-xs">0x{String(b.id).split('-')[0].toUpperCase()}</td>
+                               <td className="p-3 text-white text-sm font-bold">{b.title}</td>
+                               <td className="p-3 text-slate-400 text-xs">{b.tags}</td>
+                               <td className="p-3 text-slate-500 text-xs">{new Date(b.created_at).toISOString().split('T')[0]}</td>
+                               <td className="p-3 text-right">
                                  <button onClick={() => handleDeleteBlog(b.id)} className="text-red-500 hover:text-white hover:bg-red-500 border border-red-500/30 px-3 py-1 text-[10px] font-bold tracking-widest transition-colors">
-                                   DELETE
+                                   DEL
                                  </button>
                                </td>
                              </tr>
@@ -308,12 +308,12 @@ const AdminPanel = () => {
                      <button onClick={() => setViewMode('list')} className="text-slate-500 hover:text-white text-xs uppercase tracking-widest font-bold flex items-center gap-2 mb-4">
                         &lt; Return_To_Registry
                      </button>
-                     <div className="bg-[#030610] p-8 border border-slate-800 shadow-[-8px_8px_0_0_#4edea3]">
-                       <h2 className="text-primary text-xl font-bold uppercase tracking-widest border-b border-primary/20 pb-4 mb-6">
+                     <div className="bg-[#030610] p-5 md:p-8 border border-slate-800 shadow-[-8px_8px_0_0_#4edea3]">
+                       <h2 className="text-primary text-lg md:text-xl font-bold uppercase tracking-widest border-b border-primary/20 pb-4 mb-6">
                          Input_Blog_Payload
                        </h2>
                        <form onSubmit={handleCreateBlog} className="space-y-6">
-                         <div className="grid grid-cols-2 gap-6">
+                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                            <div>
                              <label className="text-[10px] text-slate-500 font-bold uppercase tracking-widest block mb-2">TITLE</label>
                              <input required value={blogForm.title} onChange={e=>setBlogForm({...blogForm, title: e.target.value})} className="w-full bg-[#050A15] border border-slate-700 p-3 text-sm text-white outline-none focus:border-primary transition-colors" />
@@ -342,23 +342,23 @@ const AdminPanel = () => {
                 {/* ---------------- PROJECTS VIEW ---------------- */}
                 {activeMenu === 'projects' && viewMode === 'list' && (
                   <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-                     <div className="flex justify-between items-center bg-[#030610] p-4 border border-slate-800">
-                       <h2 className="text-lg font-bold uppercase tracking-widest flex items-center gap-2">
+                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-[#030610] p-4 border border-slate-800">
+                       <h2 className="text-base md:text-lg font-bold uppercase tracking-widest flex items-center gap-2">
                          <span className="w-2 h-2 bg-primary"></span> Project_Modules
                        </h2>
-                       <button onClick={() => setViewMode('create_project')} className="bg-primary text-[#050A15] px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
-                         + Mount_New_Project
+                       <button onClick={() => setViewMode('create_project')} className="w-full sm:w-auto bg-primary text-[#050A15] px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
+                         + New_Project
                        </button>
                      </div>
                      
-                     <div className="border border-slate-800 bg-[#030610] overflow-hidden">
-                       <table className="w-full text-left border-collapse">
+                     <div className="border border-slate-800 bg-[#030610] overflow-x-auto">
+                       <table className="min-w-[500px] w-full text-left border-collapse">
                          <thead>
                            <tr className="border-b border-slate-800 bg-slate-900/50">
-                             <th className="p-4 text-slate-500 text-[10px] font-bold uppercase tracking-widest w-16">ID</th>
-                             <th className="p-4 text-slate-500 text-[10px] font-bold uppercase tracking-widest">TITLE</th>
-                             <th className="p-4 text-slate-500 text-[10px] font-bold uppercase tracking-widest">REPO URL</th>
-                             <th className="p-4 text-slate-500 text-[10px] font-bold uppercase tracking-widest text-right">ACTION</th>
+                             <th className="p-3 text-slate-500 text-[10px] font-bold uppercase tracking-widest w-16">ID</th>
+                             <th className="p-3 text-slate-500 text-[10px] font-bold uppercase tracking-widest">TITLE</th>
+                             <th className="p-3 text-slate-500 text-[10px] font-bold uppercase tracking-widest">REPO</th>
+                             <th className="p-3 text-slate-500 text-[10px] font-bold uppercase tracking-widest text-right">ACTION</th>
                            </tr>
                          </thead>
                          <tbody>
@@ -367,12 +367,12 @@ const AdminPanel = () => {
                            )}
                            {data.projects.map(p => (
                              <tr key={p.id} className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors group">
-                               <td className="p-4 text-slate-400 text-sm">0x{String(p.id).split('-')[0].toUpperCase()}</td>
-                               <td className="p-4 text-white text-sm font-bold">{p.title}</td>
-                               <td className="p-4 text-slate-400 text-xs">{p.repo_url || 'NONE'}</td>
-                               <td className="p-4 text-right">
+                               <td className="p-3 text-slate-400 text-xs">0x{String(p.id).split('-')[0].toUpperCase()}</td>
+                               <td className="p-3 text-white text-sm font-bold">{p.title}</td>
+                               <td className="p-3 text-slate-400 text-xs truncate max-w-[120px]">{p.repo_url || 'NONE'}</td>
+                               <td className="p-3 text-right">
                                  <button onClick={() => handleDeleteProject(p.id)} className="text-red-500 hover:text-white hover:bg-red-500 border border-red-500/30 px-3 py-1 text-[10px] font-bold tracking-widest transition-colors">
-                                   DELETE
+                                   DEL
                                  </button>
                                </td>
                              </tr>
@@ -388,12 +388,12 @@ const AdminPanel = () => {
                      <button onClick={() => setViewMode('list')} className="text-slate-500 hover:text-white text-xs uppercase tracking-widest font-bold flex items-center gap-2 mb-4">
                         &lt; Cancel_Mount
                      </button>
-                     <div className="bg-[#030610] p-8 border border-slate-800 shadow-[8px_8px_0_0_#4edea3]">
-                       <h2 className="text-primary text-xl font-bold uppercase tracking-widest border-b border-primary/20 pb-4 mb-6">
+                     <div className="bg-[#030610] p-5 md:p-8 border border-slate-800 shadow-[8px_8px_0_0_#4edea3]">
+                       <h2 className="text-primary text-lg md:text-xl font-bold uppercase tracking-widest border-b border-primary/20 pb-4 mb-6">
                          Module_Configuration
                        </h2>
                        <form onSubmit={handleCreateProject} className="space-y-6">
-                         <div className="grid grid-cols-2 gap-6">
+                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                            <div>
                              <label className="text-[10px] text-slate-500 font-bold uppercase tracking-widest block mb-2">MODULE TITLE</label>
                              <input required value={projectForm.title} onChange={e=>setProjectForm({...projectForm, title: e.target.value})} className="w-full bg-[#050A15] border border-slate-700 p-3 text-sm text-white outline-none focus:border-primary transition-colors" />
