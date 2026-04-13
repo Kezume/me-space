@@ -26,13 +26,13 @@ const Projects = () => {
 
   return (
     <section id="projects" className="font-mono">
-      <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-dashed border-slate-800 pb-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6 border-b border-dashed border-slate-800 pb-6">
         <div className="max-w-xl">
           <span className="inline-block px-2 py-1 mb-4 bg-primary text-[#050A15] text-[10px] uppercase font-bold tracking-widest">
             // Case_Studies
           </span>
-          <h2 className="text-3xl md:text-5xl font-bold text-white uppercase">
-            Core Infrastructure <br /> Modules
+          <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-white uppercase leading-tight">
+            Core Infrastructure Modules
           </h2>
         </div>
         <a className="text-primary text-xs border border-primary px-4 py-2 hover:bg-primary hover:text-[#050A15] transition-colors flex items-center gap-2 uppercase tracking-widest font-bold" href="https://github.com/Kezume" target="_blank" rel="noreferrer">

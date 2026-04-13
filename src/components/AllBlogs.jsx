@@ -17,18 +17,18 @@ const AllBlogs = () => {
   return (
     <div className="font-mono py-4">
       {/* Breadcrumb */}
-      <div className="mb-12 border-b border-dashed border-slate-800 pb-6 flex justify-between items-end">
+      <div className="mb-8 md:mb-12 border-b border-dashed border-slate-800 pb-4 md:pb-6 flex justify-between items-center">
         <Link to="/#blog" className="text-slate-500 hover:text-primary uppercase tracking-widest font-bold flex items-center gap-2 transition-colors text-xs">
           <span className="material-symbols-outlined text-sm">arrow_back</span> cd ..
         </Link>
-        <span className="text-[10px] text-slate-600 uppercase tracking-widest">PATH: /docs/all.index</span>
+        <span className="text-[10px] text-slate-600 uppercase tracking-widest hidden sm:block">PATH: /docs/all.index</span>
       </div>
 
-      <div className="mb-12">
+      <div className="mb-8 md:mb-12">
         <span className="inline-block px-2 py-1 mb-4 bg-primary text-[#050A15] text-[10px] uppercase font-bold tracking-widest">
           // All_Documentation
         </span>
-        <h1 className="text-4xl md:text-6xl font-bold text-white uppercase">All Blogs</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white uppercase">All Blogs</h1>
       </div>
 
       {loading ? (

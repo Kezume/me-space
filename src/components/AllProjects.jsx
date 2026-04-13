@@ -22,18 +22,18 @@ const AllProjects = () => {
   return (
     <div className="font-mono py-4">
       {/* Breadcrumb */}
-      <div className="mb-12 border-b border-dashed border-slate-800 pb-6 flex justify-between items-end">
+      <div className="mb-8 md:mb-12 border-b border-dashed border-slate-800 pb-4 md:pb-6 flex justify-between items-center">
         <Link to="/#projects" className="text-slate-500 hover:text-primary uppercase tracking-widest font-bold flex items-center gap-2 transition-colors text-xs">
           <span className="material-symbols-outlined text-sm">arrow_back</span> cd ..
         </Link>
-        <span className="text-[10px] text-slate-600 uppercase tracking-widest">PATH: /modules/all.index</span>
+        <span className="text-[10px] text-slate-600 uppercase tracking-widest hidden sm:block">PATH: /modules/all.index</span>
       </div>
 
-      <div className="mb-12">
+      <div className="mb-8 md:mb-12">
         <span className="inline-block px-2 py-1 mb-4 bg-primary text-[#050A15] text-[10px] uppercase font-bold tracking-widest">
           // All_Modules
         </span>
-        <h1 className="text-4xl md:text-6xl font-bold text-white uppercase">All Projects</h1>
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white uppercase">All Projects</h1>
       </div>
 
       {loading ? (
@@ -43,7 +43,7 @@ const AllProjects = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects.map((p) => (
-            <div key={p.id} className="bg-[#030610] border border-slate-800 p-8 flex flex-col justify-between group hover:border-primary transition-colors">
+            <div key={p.id} className="bg-[#030610] border border-slate-800 p-5 md:p-8 flex flex-col justify-between group hover:border-primary transition-colors">
               <div className="space-y-4">
                 <div className="flex justify-between items-start">
                   <div className="w-10 h-10 bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-primary/10 group-hover:text-primary border border-slate-700 group-hover:border-primary/30 transition-colors">

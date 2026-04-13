@@ -55,11 +55,11 @@ const ProjectDetail = () => {
     <div className="font-mono max-w-4xl mx-auto py-10 animate-in fade-in duration-500">
       
       {/* Navigation Breadcrumb */}
-      <div className="mb-12 border-b border-dashed border-slate-800 pb-6 flex justify-between items-end">
+      <div className="mb-8 md:mb-12 border-b border-dashed border-slate-800 pb-4 md:pb-6 flex justify-between items-center">
         <Link to="/modules" className="text-slate-500 hover:text-primary uppercase tracking-widest font-bold flex items-center gap-2 transition-colors text-xs">
           <span className="material-symbols-outlined text-sm">arrow_back</span> cd ..
         </Link>
-        <span className="text-[10px] text-slate-600 uppercase tracking-widest">PATH: /modules/{project.title.replace(/\s+/g, '-').toLowerCase()}.exe</span>
+        <span className="text-[10px] text-slate-600 uppercase tracking-widest hidden sm:block">PATH: /modules/{project.title.replace(/\s+/g, '-').toLowerCase()}.exe</span>
       </div>
 
       {/* Header Info */}
@@ -78,7 +78,7 @@ const ProjectDetail = () => {
           </div>
         </div>
         
-        <h1 className="text-4xl md:text-6xl font-bold text-white uppercase leading-tight mb-8">
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white uppercase leading-tight mb-6 md:mb-8">
           {project.title}
         </h1>
 
@@ -94,22 +94,22 @@ const ProjectDetail = () => {
       </div>
 
       {/* Action Buttons */}
-      <div className="flex flex-wrap gap-4 mb-16 pb-10 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row gap-3 mb-10 md:mb-16 pb-8 md:pb-10 border-b border-slate-800">
          {project.demo_url && (
-            <a href={ensureAbsoluteUrl(project.demo_url)} target="_blank" rel="noreferrer" className="flex items-center gap-3 px-8 py-4 bg-primary text-[#050A15] font-bold text-sm tracking-widest uppercase hover:bg-white transition-colors">
-              [ EXECUTE_LIVE_DEMO ] <span className="material-symbols-outlined text-sm animate-pulse">open_in_new</span>
+            <a href={ensureAbsoluteUrl(project.demo_url)} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-3 px-5 py-3 md:px-8 md:py-4 bg-primary text-[#050A15] font-bold text-sm tracking-widest uppercase hover:bg-white transition-colors">
+              [ LIVE_DEMO ] <span className="material-symbols-outlined text-sm animate-pulse">open_in_new</span>
             </a>
          )}
          {project.repo_url && (
-            <a href={ensureAbsoluteUrl(project.repo_url)} target="_blank" rel="noreferrer" className="flex items-center gap-3 px-8 py-4 bg-[#030610] text-slate-300 border border-slate-700 font-bold text-sm tracking-widest uppercase hover:text-white hover:border-primary transition-colors">
-              [ INSPECT_SOURCE_CODE ] <span className="material-symbols-outlined text-sm">integration_instructions</span>
+            <a href={ensureAbsoluteUrl(project.repo_url)} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-3 px-5 py-3 md:px-8 md:py-4 bg-[#030610] text-slate-300 border border-slate-700 font-bold text-sm tracking-widest uppercase hover:text-white hover:border-primary transition-colors">
+              [ SOURCE_CODE ] <span className="material-symbols-outlined text-sm">integration_instructions</span>
             </a>
          )}
       </div>
 
       {/* Content Canvas */}
       <h3 className="text-slate-500 uppercase tracking-widest text-xs font-bold mb-6">MODULE_DESCRIPTION_PAYLOAD</h3>
-      <article className="bg-[#030610] border border-slate-800 p-8 md:p-12 relative group hover:border-primary/50 transition-colors">
+      <article className="bg-[#030610] border border-slate-800 p-5 md:p-8 lg:p-12 relative group hover:border-primary/50 transition-colors">
         <div className="absolute top-0 left-0 w-1 h-full bg-slate-800 group-hover:bg-primary transition-colors"></div>
         
         <div className="whitespace-pre-wrap text-slate-300 leading-relaxed max-w-3xl">

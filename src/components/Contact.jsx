@@ -55,9 +55,9 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative py-10 font-mono">
+    <section id="contact" className="relative py-8 md:py-10 font-mono">
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start">
         
         {/* Left Side: Copy & Info */}
         <div className="lg:col-span-5 space-y-10">
@@ -65,7 +65,7 @@ const Contact = () => {
             <div className="text-primary text-xs uppercase tracking-[0.2em] font-bold mb-4">
               &gt;&gt; SECURE_CHANNEL_OPEN
             </div>
-            <h2 className="text-4xl md:text-6xl font-bold text-white uppercase leading-tight mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-6xl font-bold text-white uppercase leading-tight mb-6">
               ESTABLISH <br/> <span className="bg-primary text-[#050A15] px-2 py-1 inline-block mt-2">CONNECTION.</span>
             </h2>
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
@@ -101,7 +101,7 @@ const Contact = () => {
         </div>
 
         {/* Right Side: Contact Form Container */}
-        <div className="lg:col-span-7 bg-[#030610] border border-slate-800 p-8 md:p-12 shadow-[-8px_8px_0_0_#4edea3]">
+        <div className="lg:col-span-7 bg-[#030610] border border-slate-800 p-6 md:p-8 lg:p-12 shadow-[-8px_8px_0_0_#4edea3]">
           <div className="text-primary text-xs uppercase tracking-widest mb-8 border-b border-primary/20 pb-4 flex justify-between">
              <span>root@roihan-arrafli:~/mail_client $</span>
              {status === 'SENDING' && <span className="text-yellow-400 animate-pulse">TRANSMITTING...</span>}

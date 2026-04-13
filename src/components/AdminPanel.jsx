@@ -4,8 +4,9 @@ import { API_URL } from '../config';
 
 const AdminPanel = () => {
   const navigate = useNavigate();
-  const [activeMenu, setActiveMenu] = useState('dashboard'); // dashboard, blogs, projects, messages
-  const [viewMode, setViewMode] = useState('list'); // list, create_blog, create_project
+  const [activeMenu, setActiveMenu] = useState('dashboard');
+  const [viewMode, setViewMode] = useState('list');
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const [data, setData] = useState({ blogs: [], projects: [], messages: [], skills: [] });
   const [loading, setLoading] = useState(true);
@@ -153,8 +154,14 @@ const AdminPanel = () => {
   return (
     <div className="h-screen flex bg-[#050A15] text-white font-mono overflow-hidden">
       
+      {/* Mobile overlay */}
+      {mobileNavOpen && (
+        <div className="fixed inset-0 bg-black/60 z-40 md:hidden" onClick={() => setMobileNavOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 border-r border-slate-800 bg-[#030610] flex flex-col shrink-0">
+      <aside className={`fixed md:relative z-50 md:z-auto inset-y-0 left-0 w-64 border-r border-slate-800 bg-[#030610] flex flex-col shrink-0 transition-transform duration-300
+        ${mobileNavOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
          <div className="h-16 flex items-center px-6 border-b border-primary/30">
             <span className="text-primary font-bold tracking-widest flex items-center gap-2">
               <span className="animate-pulse">&gt;_</span> SYS_ADMIN
@@ -165,7 +172,7 @@ const AdminPanel = () => {
             {navigation.map(nav => (
               <button 
                 key={nav.id} 
-                onClick={() => { setActiveMenu(nav.id); setViewMode('list'); }}
+                onClick={() => { setActiveMenu(nav.id); setViewMode('list'); setMobileNavOpen(false); }}
                 className={`flex items-center gap-3 px-4 py-3 text-xs uppercase tracking-widest font-bold text-left transition-colors
                   ${activeMenu === nav.id 
                     ? 'bg-primary/10 text-primary border-l-2 border-primary' 
@@ -193,20 +200,27 @@ const AdminPanel = () => {
          }}></div>
 
          {/* Header */}
-         <header className="h-16 border-b border-slate-800 flex items-center justify-between px-8 bg-[#050A15]/80 backdrop-blur z-10 shrink-0">
-            <div className="text-xs text-slate-500 tracking-widest uppercase">
-               root <span className="text-primary mx-2">/</span> admin <span className="text-primary mx-2">/</span> {activeMenu}
+         <header className="h-14 md:h-16 border-b border-slate-800 flex items-center justify-between px-4 md:px-8 bg-[#050A15]/80 backdrop-blur z-10 shrink-0">
+            <div className="flex items-center gap-3">
+              {/* Mobile hamburger */}
+              <button
+                className="md:hidden text-slate-400 hover:text-primary transition-colors"
+                onClick={() => setMobileNavOpen(!mobileNavOpen)}
+              >
+                <span className="material-symbols-outlined">menu</span>
+              </button>
+              <div className="text-xs text-slate-500 tracking-widest uppercase">
+                root <span className="text-primary mx-1">/</span> <span className="hidden sm:inline">admin /</span> <span className="text-primary">{activeMenu}</span>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-               <div className="flex items-center gap-2">
-                 <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
-                 <span className="text-[10px] text-slate-400">CLUSTER_ONLINE</span>
-               </div>
+            <div className="flex items-center gap-3">
+               <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+               <span className="text-[10px] text-slate-400 hidden sm:inline">CLUSTER_ONLINE</span>
             </div>
          </header>
 
          {/* Scrollable Content Area */}
-         <div className="flex-1 overflow-y-auto p-8 z-10">
+         <div className="flex-1 overflow-y-auto p-4 md:p-8 z-10">
             {loading ? (
               <div className="flex items-center gap-3 text-primary uppercase text-sm font-bold animate-pulse absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                 [ INIT_DATA_SEQUENCE... ]

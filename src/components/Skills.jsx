@@ -29,8 +29,8 @@ const Skills = () => {
           // Tech_Stack
         </span>
         <div className="flex justify-between items-end gap-6">
-          <h2 className="text-3xl md:text-5xl font-bold text-white uppercase">
-            System <br /> Capabilities
+          <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-white uppercase leading-tight">
+            System Capabilities
           </h2>
           <span className="text-slate-600 text-xs uppercase tracking-widest hidden md:block">
             kernel: backend_node v2.4

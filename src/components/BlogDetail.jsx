@@ -50,11 +50,11 @@ const BlogDetail = () => {
     <div className="font-mono max-w-4xl mx-auto py-10 animate-in fade-in duration-500">
       
       {/* Navigation Breadcrumb */}
-      <div className="mb-12 border-b border-dashed border-slate-800 pb-6 flex justify-between items-end">
+      <div className="mb-8 md:mb-12 border-b border-dashed border-slate-800 pb-4 md:pb-6 flex justify-between items-center">
         <Link to="/docs" className="text-slate-500 hover:text-primary uppercase tracking-widest font-bold flex items-center gap-2 transition-colors text-xs">
           <span className="material-symbols-outlined text-sm">arrow_back</span> cd ..
         </Link>
-        <span className="text-[10px] text-slate-600 uppercase tracking-widest">PATH: /blogs/{blog.slug}.md</span>
+        <span className="text-[10px] text-slate-600 uppercase tracking-widest hidden sm:block">PATH: /blogs/{blog.slug}.md</span>
       </div>
 
       {/* Header Info */}
@@ -68,7 +68,7 @@ const BlogDetail = () => {
           </span>
         </div>
         
-        <h1 className="text-4xl md:text-6xl font-bold text-white uppercase leading-tight mb-8">
+        <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-white uppercase leading-tight mb-6 md:mb-8">
           {blog.title}
         </h1>
 
@@ -84,7 +84,7 @@ const BlogDetail = () => {
       </div>
 
       {/* Content Canvas */}
-      <article className="bg-[#030610] border border-slate-800 p-8 md:p-12 shadow-[-8px_8px_0_0_#0f172a] relative group hover:border-primary/50 transition-colors">
+      <article className="bg-[#030610] border border-slate-800 p-5 md:p-8 lg:p-12 shadow-[-8px_8px_0_0_#0f172a] relative group hover:border-primary/50 transition-colors">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-transparent opacity-50"></div>
         
         <div className="prose prose-invert prose-slate max-w-none prose-p:leading-relaxed prose-p:text-slate-300 prose-headings:text-white prose-headings:uppercase prose-a:text-primary prose-a:no-underline hover:prose-a:underline focus:outline-none whitespace-pre-wrap">

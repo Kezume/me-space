@@ -2,17 +2,17 @@ import React from 'react';
 
 const About = () => {
   return (
-    <section id="about" className="py-24 relative font-mono">
+    <section id="about" className="py-16 md:py-24 relative font-mono">
       
       {/* Decorative large background text */}
       <div className="absolute top-10 right-0 text-[#E2E8F0]/[0.02] font-black text-[120px] md:text-[200px] leading-none select-none pointer-events-none uppercase tracking-tighter">
         SYSTEMS
       </div>
 
-      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
+      <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-24 items-center">
         
         {/* Left Side: Philosophy */}
-        <div className="space-y-8 p-8 border border-primary/20 bg-[#030610] shadow-[-4px_4px_0_0_#4edea3]">
+        <div className="space-y-6 md:space-y-8 p-6 md:p-8 border border-primary/20 bg-[#030610] shadow-[-4px_4px_0_0_#4edea3]">
           <div className="inline-flex items-center gap-2 mb-4">
             <span className="text-primary font-bold">&gt;&gt;</span>
             <span className="text-primary text-xs uppercase tracking-[0.2em] font-semibold">THE_PHILOSOPHY</span>

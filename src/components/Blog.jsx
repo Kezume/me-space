@@ -29,7 +29,7 @@ const Blog = () => {
       {latestBlog && (
         <div className="mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 border border-slate-800 bg-[#030610] shadow-[8px_8px_0_0_#0f172a] hover:border-primary transition-colors duration-500">
-            <div className="lg:col-span-7 p-8 md:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-dashed border-slate-800">
+            <div className="lg:col-span-7 p-6 md:p-8 lg:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-dashed border-slate-800">
               <div className="flex items-center justify-between mb-8">
                 <span className="bg-primary text-[#050A15] px-2 py-1 text-[10px] font-bold uppercase tracking-widest">
                   [LATEST_RELEASE]
@@ -39,7 +39,7 @@ const Blog = () => {
                 </span>
               </div>
               
-              <h3 className="text-3xl md:text-5xl font-bold text-white leading-tight uppercase mb-6 hover:text-primary transition-colors cursor-pointer line-clamp-2">
+              <h3 className="text-2xl md:text-3xl lg:text-5xl font-bold text-white leading-tight uppercase mb-6 hover:text-primary transition-colors cursor-pointer line-clamp-2">
                 {latestBlog.title}
               </h3>
               
@@ -75,9 +75,9 @@ const Blog = () => {
       )}
 
       {/* Articles Grid Header */}
-      <div className="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-dashed border-slate-800 pb-4 gap-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 border-b border-dashed border-slate-800 pb-4 gap-4">
         <div className="max-w-2xl">
-          <h2 className="text-2xl md:text-3xl font-bold text-white uppercase">Technical_Documentation</h2>
+          <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-white uppercase leading-tight">Tech_Docs</h2>
         </div>
         <div className="flex gap-6 font-mono text-xs font-bold uppercase tracking-widest text-slate-500">
            <span className="flex items-center gap-2"><span className="text-primary">[+]</span> PUBLISHED</span>
