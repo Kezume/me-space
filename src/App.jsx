@@ -36,37 +36,41 @@ function SharedLayout({ children }) {
 
       <div className="relative z-10">
         <Navbar />
-        <main className="pt-32 pb-20 px-6 md:px-12 max-w-[1400px] mx-auto min-h-screen">
+        <main className="pt-32 pb-8 px-6 md:px-12 max-w-[1400px] mx-auto min-h-screen">
           {children}
         </main>
         
         {/* Strict Coding Footer */}
-        <footer className="w-full border-t border-primary/20 bg-[#050A15] relative z-20 mt-20">
-          <div className="flex flex-col md:flex-row justify-between items-center py-8 px-6 md:px-12 max-w-[1400px] mx-auto">
-            <div className="mb-6 md:mb-0">
-              <div className="text-primary font-mono font-bold text-lg mb-2 flex items-center justify-center md:justify-start gap-3 uppercase tracking-widest">
-                <span className="w-3 h-3 bg-primary animate-pulse"></span>
+        <footer className="w-full border-t border-primary/20 bg-[#050A15] relative z-20 mt-8">
+          <div className="flex flex-col items-center gap-6 py-8 px-6 md:px-12 max-w-[1400px] mx-auto md:flex-row md:justify-between">
+
+            {/* Left: Branding */}
+            <div className="text-center md:text-left">
+              <div className="text-primary font-mono font-bold text-base mb-1 flex items-center justify-center md:justify-start gap-3 uppercase tracking-widest">
+                <span className="w-2.5 h-2.5 bg-primary animate-pulse"></span>
                 Roihan_Arrafli
               </div>
-              <p className="text-slate-500 font-mono text-xs tracking-widest text-center md:text-left uppercase">
-                <span className="text-primary/50">/*</span> © 2024. Roihan Arrafli. All systems operational. <span className="text-primary/50">*/</span>
+              <p className="text-slate-500 font-mono text-[10px] tracking-widest uppercase">
+                <span className="text-primary/50">/*</span> © 2024. All systems operational. <span className="text-primary/50">*/</span>
               </p>
             </div>
-            
-            <div className="flex gap-8 font-mono text-xs tracking-widest uppercase">
-              <a className="text-slate-400 hover:text-primary hover:bg-primary/10 px-3 py-1 border border-transparent hover:border-primary/30 transition-colors" href="https://github.com/Kezume" target="_blank" rel="noreferrer">
+
+            {/* Right: Links */}
+            <div className="flex flex-wrap justify-center gap-3 font-mono text-xs tracking-widest uppercase">
+              <a className="text-slate-400 hover:text-primary hover:bg-primary/10 px-3 py-1.5 border border-transparent hover:border-primary/30 transition-colors" href="https://github.com/Kezume" target="_blank" rel="noreferrer">
                 [GitHub]
               </a>
-              <a className="text-slate-400 hover:text-primary hover:bg-primary/10 px-3 py-1 border border-transparent hover:border-primary/30 transition-colors" href="https://www.linkedin.com/in/roihanarrafli" target="_blank" rel="noreferrer">
+              <a className="text-slate-400 hover:text-primary hover:bg-primary/10 px-3 py-1.5 border border-transparent hover:border-primary/30 transition-colors" href="https://www.linkedin.com/in/roihanarrafli" target="_blank" rel="noreferrer">
                 [LinkedIn]
               </a>
-              <a className="text-slate-400 hover:text-primary hover:bg-primary/10 px-3 py-1 border border-transparent hover:border-primary/30 transition-colors flex items-center gap-2" href="#blog" title="Technical Documentation">
+              <a className="text-slate-400 hover:text-primary hover:bg-primary/10 px-3 py-1.5 border border-transparent hover:border-primary/30 transition-colors" href="#blog">
                 [Docs]
               </a>
-              <a className="text-slate-400 hover:text-primary hover:bg-primary/10 px-3 py-1 border border-transparent hover:border-primary/30 transition-colors flex items-center gap-2" href="#" title="System Operability">
-                <span className="w-2 h-2 bg-primary animate-pulse"></span> [Status]
+              <a className="text-slate-400 hover:text-primary hover:bg-primary/10 px-3 py-1.5 border border-transparent hover:border-primary/30 transition-colors flex items-center gap-1.5" href="#">
+                <span className="w-1.5 h-1.5 bg-primary animate-pulse"></span> [Status]
               </a>
             </div>
+
           </div>
         </footer>
       </div>
