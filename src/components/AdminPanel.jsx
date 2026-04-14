@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config';
 
@@ -10,6 +10,7 @@ const AdminPanel = () => {
 
   const [data, setData] = useState({ blogs: [], projects: [], messages: [], skills: [] });
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   // Custom confirm modal — no more ugly browser alerts
   const [confirmModal, setConfirmModal] = useState({ open: false, text: '', onConfirm: null });
@@ -30,8 +31,9 @@ const AdminPanel = () => {
     fetchData();
   }, [token, navigate]);
 
-  const fetchData = async () => {
-    setLoading(true);
+  const fetchData = async (silent = false) => {
+    if (silent) setRefreshing(true);
+    else setLoading(true);
     try {
       const [bRes, pRes, mRes, sRes] = await Promise.all([
         fetch(`${API_URL}/api/blogs`),
@@ -54,6 +56,7 @@ const AdminPanel = () => {
       console.error(err);
     } finally {
       setLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -231,7 +234,13 @@ const AdminPanel = () => {
             ))}
          </nav>
          
-         <div className="p-4 border-t border-slate-800">
+         <div className="p-4 border-t border-slate-800 space-y-2">
+            <a
+              href="/"
+              className="w-full flex justify-center items-center gap-2 text-xs text-slate-400 hover:text-primary border border-slate-700 hover:border-primary/50 py-2 transition-colors uppercase tracking-widest font-bold"
+            >
+              <span className="material-symbols-outlined text-sm">home</span> View_Site
+            </a>
             <button onClick={handleLogout} className="w-full flex justify-center items-center gap-2 text-xs text-slate-500 hover:text-red-400 py-2 transition-colors uppercase tracking-widest font-bold">
                <span className="material-symbols-outlined text-sm">power_settings_new</span> Terminate_Session
             </button>
@@ -311,9 +320,14 @@ const AdminPanel = () => {
                        <h2 className="text-base md:text-lg font-bold uppercase tracking-widest flex items-center gap-2">
                          <span className="w-2 h-2 bg-primary"></span> Blog_Archive Registry
                        </h2>
-                       <button onClick={() => setViewMode('create_blog')} className="w-full sm:w-auto bg-primary text-[#050A15] px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
-                         + New_Record
-                       </button>
+                       <div className="flex gap-2 w-full sm:w-auto">
+                         <button onClick={() => fetchData(true)} disabled={refreshing} className="flex items-center gap-1.5 border border-slate-600 hover:border-primary text-slate-400 hover:text-primary px-3 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors disabled:opacity-50">
+                           <span className={`material-symbols-outlined text-[14px] ${refreshing ? 'animate-spin' : ''}`}>refresh</span> Sync
+                         </button>
+                         <button onClick={() => setViewMode('create_blog')} className="flex-1 sm:flex-none bg-primary text-[#050A15] px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
+                           + New_Record
+                         </button>
+                       </div>
                      </div>
                      
                      <div className="border border-slate-800 bg-[#030610] overflow-x-auto">
@@ -393,9 +407,14 @@ const AdminPanel = () => {
                        <h2 className="text-base md:text-lg font-bold uppercase tracking-widest flex items-center gap-2">
                          <span className="w-2 h-2 bg-primary"></span> Project_Modules
                        </h2>
-                       <button onClick={() => setViewMode('create_project')} className="w-full sm:w-auto bg-primary text-[#050A15] px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
-                         + New_Project
-                       </button>
+                       <div className="flex gap-2 w-full sm:w-auto">
+                         <button onClick={() => fetchData(true)} disabled={refreshing} className="flex items-center gap-1.5 border border-slate-600 hover:border-primary text-slate-400 hover:text-primary px-3 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors disabled:opacity-50">
+                           <span className={`material-symbols-outlined text-[14px] ${refreshing ? 'animate-spin' : ''}`}>refresh</span> Sync
+                         </button>
+                         <button onClick={() => setViewMode('create_project')} className="flex-1 sm:flex-none bg-primary text-[#050A15] px-4 py-2 text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
+                           + New_Project
+                         </button>
+                       </div>
                      </div>
                      
                      <div className="border border-slate-800 bg-[#030610] overflow-x-auto">
@@ -475,10 +494,14 @@ const AdminPanel = () => {
                 {/* ---------------- MESSAGES VIEW ---------------- */}
                 {activeMenu === 'messages' && (
                   <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-                     <div className="flex bg-[#030610] p-4 border border-slate-800">
+                     <div className="flex justify-between items-center bg-[#030610] p-4 border border-slate-800">
                        <h2 className="text-lg font-bold uppercase tracking-widest flex items-center gap-2 text-white">
                          <span className="material-symbols-outlined text-primary">mail</span> Communication_Logs
+                         <span className="text-slate-600 text-xs font-normal">({data.messages.length})</span>
                        </h2>
+                       <button onClick={() => fetchData(true)} disabled={refreshing} className="flex items-center gap-1.5 border border-slate-600 hover:border-primary text-slate-400 hover:text-primary px-3 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors disabled:opacity-50">
+                         <span className={`material-symbols-outlined text-[14px] ${refreshing ? 'animate-spin' : ''}`}>refresh</span> Sync
+                       </button>
                      </div>
                      
                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -515,6 +538,14 @@ const AdminPanel = () => {
                 {/* ---------------- SKILLS VIEW ---------------- */}
                 {activeMenu === 'skills' && (
                   <div className="space-y-8 animate-in fade-in duration-300">
+                    <div className="flex justify-between items-center bg-[#030610] p-4 border border-slate-800">
+                      <h2 className="text-base font-bold uppercase tracking-widest flex items-center gap-2">
+                        <span className="w-2 h-2 bg-primary"></span> Skills_Registry
+                      </h2>
+                      <button onClick={() => fetchData(true)} disabled={refreshing} className="flex items-center gap-1.5 border border-slate-600 hover:border-primary text-slate-400 hover:text-primary px-3 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors disabled:opacity-50">
+                        <span className={`material-symbols-outlined text-[14px] ${refreshing ? 'animate-spin' : ''}`}>refresh</span> Sync
+                      </button>
+                    </div>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                       {/* Add Skill Form */}
                       <div className="bg-[#030610] p-8 border border-slate-800 shadow-[-8px_8px_0_0_#4edea3]">
