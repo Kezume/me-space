@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config';
 
@@ -494,9 +494,9 @@ const AdminPanel = () => {
                 {/* ---------------- MESSAGES VIEW ---------------- */}
                 {activeMenu === 'messages' && (
                   <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-                     <div className="flex justify-between items-center bg-[#030610] p-4 border border-slate-800">
-                       <h2 className="text-lg font-bold uppercase tracking-widest flex items-center gap-2 text-white">
-                         <span className="material-symbols-outlined text-primary">mail</span> Communication_Logs
+                     <div className="flex flex-wrap justify-between items-center gap-2 bg-[#030610] p-4 border border-slate-800">
+                       <h2 className="text-base font-bold uppercase tracking-widest flex items-center gap-2 text-white">
+                         <span className="material-symbols-outlined text-primary text-[18px]">mail</span> Communication_Logs
                          <span className="text-slate-600 text-xs font-normal">({data.messages.length})</span>
                        </h2>
                        <button onClick={() => fetchData(true)} disabled={refreshing} className="flex items-center gap-1.5 border border-slate-600 hover:border-primary text-slate-400 hover:text-primary px-3 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors disabled:opacity-50">
@@ -509,19 +509,19 @@ const AdminPanel = () => {
                           <div className="col-span-full py-12 text-center text-slate-500 border border-dashed border-slate-800">NO_TRANSMISSIONS_INTERCEPTED</div>
                         )}
                         {data.messages.map(m => (
-                          <div key={m.id} className="bg-[#030610] border border-slate-800 relative group overflow-hidden">
+                          <div key={m.id} className="bg-[#030610] border border-slate-800 relative group overflow-hidden min-w-0">
                              <div className="absolute top-0 left-0 w-1 h-full bg-slate-800 group-hover:bg-primary transition-colors"></div>
-                             <div className="p-6">
-                                <div className="flex justify-between items-start border-b border-slate-800 pb-4 mb-4">
+                             <div className="p-4 md:p-6">
+                                <div className="flex justify-between items-start gap-2 border-b border-slate-800 pb-4 mb-4">
                                    <div>
-                                     <p className="text-white font-bold text-sm">{m.name}</p>
-                                     <p className="text-slate-500 text-[10px] font-bold"><a href={`mailto:${m.email}`} className="hover:text-primary transition-colors">{m.email}</a></p>
+                                     <p className="text-white font-bold text-sm truncate">{m.name}</p>
+                                     <p className="text-slate-500 text-[10px] font-bold truncate"><a href={`mailto:${m.email}`} className="hover:text-primary transition-colors">{m.email}</a></p>
                                    </div>
-                                   <span className="text-[10px] text-slate-600 font-bold uppercase">
+                                   <span className="text-[10px] text-slate-600 font-bold uppercase shrink-0">
                                      {new Date(m.created_at).toISOString().split('T')[0]}
                                    </span>
                                 </div>
-                                <p className="text-slate-400 text-xs leading-relaxed font-sans mb-5">{m.message}</p>
+                                <p className="text-slate-400 text-xs leading-relaxed font-sans mb-5 break-words">{m.message}</p>
                                 <button
                                   onClick={() => handleDeleteMessage(m.id)}
                                   className="w-full text-red-500 hover:text-white hover:bg-red-500 border border-red-500/30 px-3 py-1.5 text-[10px] font-bold tracking-widest transition-colors flex items-center justify-center gap-1.5"
