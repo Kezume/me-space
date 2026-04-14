@@ -30,12 +30,12 @@ const Blog = () => {
         <div className="mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 border border-slate-800 bg-[#030610] shadow-[8px_8px_0_0_#0f172a] hover:border-primary transition-colors duration-500">
             <div className="lg:col-span-7 p-6 md:p-8 lg:p-12 flex flex-col justify-center border-b lg:border-b-0 lg:border-r border-dashed border-slate-800">
-              <div className="flex items-center justify-between mb-8">
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-8">
                 <span className="bg-primary text-[#050A15] px-2 py-1 text-[10px] font-bold uppercase tracking-widest">
                   [LATEST_RELEASE]
                 </span>
                 <span className="text-slate-500 text-[10px] tracking-widest uppercase">
-                  {new Date(latestBlog.created_at).toISOString().split('T')[0]} // {new Date(latestBlog.created_at).toISOString().split('T')[1].substring(0,5)} UTC
+                  {new Date(latestBlog.created_at).toISOString().split('T')[0]}
                 </span>
               </div>
               
@@ -143,8 +143,12 @@ const Blog = () => {
       {/* View All Blogs Button */}
       {blogs.length > 0 && (
         <div className="mt-12 flex justify-center">
-          <Link to="/docs" className="flex items-center gap-3 px-8 py-4 border border-slate-700 text-slate-400 font-bold text-sm tracking-widest uppercase hover:border-primary hover:text-primary transition-colors">
-            [ LOAD_ALL_DOCUMENTATION ] <span className="material-symbols-outlined text-sm">arrow_right_alt</span>
+          <Link
+            to="/docs"
+            className="inline-flex flex-wrap items-center justify-center gap-2 px-5 py-4 sm:px-8 border border-slate-700 text-slate-400 font-bold text-xs sm:text-sm tracking-widest uppercase hover:border-primary hover:text-primary transition-colors text-center"
+          >
+            <span>[ LOAD_ALL_DOCUMENTATION ]</span>
+            <span className="material-symbols-outlined text-sm">arrow_right_alt</span>
           </Link>
         </div>
       )}
