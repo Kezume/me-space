@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config';
 
@@ -10,7 +10,12 @@ const AdminPanel = () => {
 
   const [data, setData] = useState({ blogs: [], projects: [], messages: [], skills: [] });
   const [loading, setLoading] = useState(true);
-  
+
+  // Custom confirm modal — no more ugly browser alerts
+  const [confirmModal, setConfirmModal] = useState({ open: false, text: '', onConfirm: null });
+  const showConfirm = (text, onConfirm) => setConfirmModal({ open: true, text, onConfirm });
+  const closeConfirm = () => setConfirmModal({ open: false, text: '', onConfirm: null });
+
   // Forms
   const [blogForm, setBlogForm] = useState({ title: '', slug: '', tags: '', content: '' });
   const [projectForm, setProjectForm] = useState({ title: '', description: '', repo_url: '', tags: '', demo_url: '' });
@@ -73,15 +78,16 @@ const AdminPanel = () => {
     } catch(err) { console.error(err); }
   };
   
-  const handleDeleteBlog = async (id) => {
-    if (!confirm("Execute DELETE on this record?")) return;
-    try {
-      await fetch(`${API_URL}/api/admin/blogs/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      fetchData();
-    } catch(err) { console.error(err); }
+  const handleDeleteBlog = (id) => {
+    showConfirm('Hapus record blog ini? Tindakan ini tidak dapat dibatalkan.', async () => {
+      try {
+        await fetch(`${API_URL}/api/admin/blogs/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        fetchData();
+      } catch(err) { console.error(err); }
+    });
   };
 
   const handleCreateProject = async (e) => {
@@ -100,15 +106,16 @@ const AdminPanel = () => {
     } catch(err) { console.error(err); }
   };
 
-  const handleDeleteProject = async (id) => {
-    if (!confirm("Execute DELETE on this record?")) return;
-    try {
-      await fetch(`${API_URL}/api/admin/projects/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      fetchData();
-    } catch(err) { console.error(err); }
+  const handleDeleteProject = (id) => {
+    showConfirm('Hapus project ini? Tindakan ini tidak dapat dibatalkan.', async () => {
+      try {
+        await fetch(`${API_URL}/api/admin/projects/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        fetchData();
+      } catch(err) { console.error(err); }
+    });
   };
 
   const [skillForm, setSkillForm] = useState({ category: '', name: '' });
@@ -128,19 +135,32 @@ const AdminPanel = () => {
     } catch(err) { console.error(err); }
   };
 
-  const handleDeleteSkill = async (id) => {
-    if (!confirm("Delete this skill?")) return;
-    try {
-      await fetch(`${API_URL}/api/admin/skills/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      fetchData();
-    } catch(err) { console.error(err); }
+  const handleDeleteSkill = (id) => {
+    showConfirm('Hapus skill ini dari registry?', async () => {
+      try {
+        await fetch(`${API_URL}/api/admin/skills/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        fetchData();
+      } catch(err) { console.error(err); }
+    });
   };
 
   const [cvStatus, setCvStatus] = useState(null); // null | 'uploading' | 'success' | 'error'
   const [cvError, setCvError] = useState('');
+
+  const handleDeleteMessage = (id) => {
+    showConfirm('Hapus pesan ini dari system logs? Tindakan ini tidak dapat dibatalkan.', async () => {
+      try {
+        await fetch(`${API_URL}/api/admin/messages/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        fetchData();
+      } catch(err) { console.error(err); }
+    });
+  };
 
   const navigation = [
     { id: 'dashboard', label: 'Dashboard', icon: 'space_dashboard' },
@@ -153,7 +173,34 @@ const AdminPanel = () => {
 
   return (
     <div className="h-screen flex bg-[#050A15] text-white font-mono overflow-hidden">
-      
+
+      {/* Custom Confirm Modal */}
+      {confirmModal.open && (
+        <div className="fixed inset-0 bg-black/75 z-[100] flex items-center justify-center p-4">
+          <div className="bg-[#030610] border border-red-500/50 p-8 max-w-sm w-full shadow-[0_0_60px_rgba(239,68,68,0.15)] animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="material-symbols-outlined text-red-400 text-lg">warning</span>
+              <span className="text-red-400 text-[10px] font-bold uppercase tracking-widest">CONFIRM_ACTION</span>
+            </div>
+            <p className="text-slate-300 text-sm leading-relaxed mb-8">{confirmModal.text}</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => { confirmModal.onConfirm(); closeConfirm(); }}
+                className="flex-1 bg-red-500 text-white py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-red-400 transition-colors"
+              >
+                CONFIRM_DELETE
+              </button>
+              <button
+                onClick={closeConfirm}
+                className="flex-1 bg-slate-800 text-slate-300 py-3 text-[11px] font-bold uppercase tracking-widest hover:bg-slate-700 transition-colors border border-slate-700"
+              >
+                CANCEL
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Mobile overlay */}
       {mobileNavOpen && (
         <div className="fixed inset-0 bg-black/60 z-40 md:hidden" onClick={() => setMobileNavOpen(false)} />
@@ -451,7 +498,13 @@ const AdminPanel = () => {
                                      {new Date(m.created_at).toISOString().split('T')[0]}
                                    </span>
                                 </div>
-                                <p className="text-slate-400 text-xs leading-relaxed font-sans">{m.message}</p>
+                                <p className="text-slate-400 text-xs leading-relaxed font-sans mb-5">{m.message}</p>
+                                <button
+                                  onClick={() => handleDeleteMessage(m.id)}
+                                  className="w-full text-red-500 hover:text-white hover:bg-red-500 border border-red-500/30 px-3 py-1.5 text-[10px] font-bold tracking-widest transition-colors flex items-center justify-center gap-1.5"
+                                >
+                                  <span className="material-symbols-outlined text-[14px]">delete</span> DEL_TRANSMISSION
+                                </button>
                              </div>
                           </div>
                         ))}
