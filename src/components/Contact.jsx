@@ -11,15 +11,28 @@ const Contact = () => {
   });
   
   const [status, setStatus] = useState('IDLE'); // IDLE, SENDING, SUCCESS, ERROR
+  const [validationError, setValidationError] = useState(null); // null or string message
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value});
+    // Clear validation error when user starts typing
+    if (validationError) setValidationError(null);
+  };
+
+  const getMissingFields = () => {
+    const missing = [];
+    if (!formData.name) missing.push('name');
+    if (!formData.email) missing.push('email');
+    if (!formData.message) missing.push('message');
+    return missing;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) {
-      alert("Please fill out all fields.");
+    const missing = getMissingFields();
+    if (missing.length > 0) {
+      setValidationError(`ERR_EMPTY_FIELD: [${missing.join(', ').toUpperCase()}] required`);
+      setTimeout(() => setValidationError(null), 4000);
       return;
     }
 
@@ -52,6 +65,11 @@ const Contact = () => {
        console.error("Network Error:", error);
        setTimeout(() => setStatus('IDLE'), 3000);
     }
+  };
+
+  const isFieldMissing = (fieldName) => {
+    if (!validationError) return false;
+    return !formData[fieldName];
   };
 
   return (
@@ -109,10 +127,17 @@ const Contact = () => {
              {status === 'ERROR' && <span className="text-red-500">ERR_CONNECTION</span>}
           </div>
 
+          {/* Inline Validation Error Banner */}
+          {validationError && (
+            <div className="bg-red-500/10 border border-red-500/50 px-4 py-3 mb-2 flex items-center gap-3 animate-pulse">
+              <span className="text-red-500 text-xs font-bold tracking-widest">⚠ {validationError}</span>
+            </div>
+          )}
+
           <form action="#" className="space-y-6" onSubmit={handleSubmit}>
             {/* Input Field: Name */}
             <div className="group">
-              <label className={`block text-[10px] font-bold tracking-widest uppercase mb-1 ${focusedField === 'name' ? 'text-primary' : 'text-slate-500'}`} htmlFor="name">
+              <label className={`block text-[10px] font-bold tracking-widest uppercase mb-1 ${isFieldMissing('name') ? 'text-red-500' : focusedField === 'name' ? 'text-primary' : 'text-slate-500'}`} htmlFor="name">
                 <span className="opacity-50">&gt;</span> Source_Identity
               </label>
               <input 
@@ -121,14 +146,14 @@ const Contact = () => {
                 onChange={handleChange}
                 value={formData.name}
                 disabled={status === 'SENDING'}
-                className="w-full bg-[#050A15] border border-slate-700 focus:border-primary px-4 py-3 text-white text-sm placeholder:text-slate-700 outline-none transition-colors disabled:opacity-50" 
+                className={`w-full bg-[#050A15] border px-4 py-3 text-white text-sm placeholder:text-slate-700 outline-none transition-colors disabled:opacity-50 ${isFieldMissing('name') ? 'border-red-500' : 'border-slate-700 focus:border-primary'}`}
                 id="name" name="name" placeholder="Who is sending?" type="text"
               />
             </div>
             
             {/* Input Field: Email */}
             <div className="group">
-              <label className={`block text-[10px] font-bold tracking-widest uppercase mb-1 ${focusedField === 'email' ? 'text-primary' : 'text-slate-500'}`} htmlFor="email">
+              <label className={`block text-[10px] font-bold tracking-widest uppercase mb-1 ${isFieldMissing('email') ? 'text-red-500' : focusedField === 'email' ? 'text-primary' : 'text-slate-500'}`} htmlFor="email">
                 <span className="opacity-50">&gt;</span> Return_Address
               </label>
               <input 
@@ -137,14 +162,14 @@ const Contact = () => {
                 onChange={handleChange}
                 value={formData.email}
                 disabled={status === 'SENDING'}
-                className="w-full bg-[#050A15] border border-slate-700 focus:border-primary px-4 py-3 text-white text-sm placeholder:text-slate-700 outline-none transition-colors disabled:opacity-50" 
+                className={`w-full bg-[#050A15] border px-4 py-3 text-white text-sm placeholder:text-slate-700 outline-none transition-colors disabled:opacity-50 ${isFieldMissing('email') ? 'border-red-500' : 'border-slate-700 focus:border-primary'}`}
                 id="email" name="email" placeholder="user@provider.com" type="email"
               />
             </div>
             
             {/* Input Field: Message */}
             <div className="group">
-              <label className={`block text-[10px] font-bold tracking-widest uppercase mb-1 ${focusedField === 'message' ? 'text-primary' : 'text-slate-500'}`} htmlFor="message">
+              <label className={`block text-[10px] font-bold tracking-widest uppercase mb-1 ${isFieldMissing('message') ? 'text-red-500' : focusedField === 'message' ? 'text-primary' : 'text-slate-500'}`} htmlFor="message">
                 <span className="opacity-50">&gt;</span> Transmission_Payload
               </label>
               <textarea 
@@ -153,7 +178,7 @@ const Contact = () => {
                 onChange={handleChange}
                 value={formData.message}
                 disabled={status === 'SENDING'}
-                className="w-full bg-[#050A15] border border-slate-700 focus:border-primary px-4 py-3 text-white text-sm placeholder:text-slate-700 outline-none transition-colors resize-none disabled:opacity-50" 
+                className={`w-full bg-[#050A15] border px-4 py-3 text-white text-sm placeholder:text-slate-700 outline-none transition-colors resize-none disabled:opacity-50 ${isFieldMissing('message') ? 'border-red-500' : 'border-slate-700 focus:border-primary'}`}
                 id="message" name="message" placeholder="Input string payload..." rows="4"
               ></textarea>
             </div>
