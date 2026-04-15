@@ -32,7 +32,10 @@ const BlogDetail = () => {
       });
   }, [id]);
 
-  const getShareUrl = () => window.location.href;
+  // OG share URL — goes through backend for dynamic meta tags (WhatsApp/social preview)
+  const getShareUrl = () => `${API_URL}/og/blog/${id}`;
+  // Direct page URL — for copying the link to visit directly
+  const getPageUrl = () => window.location.href;
 
   const shareToWhatsApp = () => {
     const text = `📄 ${blog.title}\n\n${getShareUrl()}`;
@@ -59,13 +62,13 @@ const BlogDetail = () => {
 
   const copyLink = async () => {
     try {
-      await navigator.clipboard.writeText(getShareUrl());
+      await navigator.clipboard.writeText(getPageUrl());
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // Fallback for older browsers
       const textarea = document.createElement('textarea');
-      textarea.value = getShareUrl();
+      textarea.value = getPageUrl();
       textarea.style.position = 'fixed';
       textarea.style.opacity = '0';
       document.body.appendChild(textarea);
